@@ -1,8 +1,8 @@
-// importing  axios
+
 import axios from 'axios'
 let notesListRootElement=document.querySelector(".notesList")
 let noteBtn=document.getElementById('createNoteButton')
-// creating the variable for storing updating id and at 1st it is null
+
 let updatingID=null
 let notes=[]
 noteBtn.addEventListener('click',async()=>{
@@ -23,21 +23,20 @@ noteBtn.addEventListener('click',async()=>{
      updatingID=null
      noteBtn.innerText='Submit'
   }else{
-  let res=await axios.post("http://localhost:3000/api/v1/players/add-players",body)//passing the data in body to db
+  let res=await axios.post("http://localhost:3000/api/v1/players/add-players",body)
    document.getElementById('warning-msg').innerHTML=""
 }
-  renderElementsToScreen()//if the player is added it automatically updates the pg without refreshing the page
+  renderElementsToScreen()
 
  
 
 })
 async function renderElementsToScreen(){
-// ensuring the delete note is cleared before refreshing the pg
+
 notesListRootElement.innerText=''
-let players=await axios.get("http://localhost:3000/api/v1/players/get-players")//fetching data from db and using async and await as apis always returns promise and to handle it we use async and await
- console.log(players.data.data)//see the only data from db not entire object
-notes=players.data.data//updating notes with players data
-// ensuring notes i s an array  before using forEach
+let players=await axios.get("http://localhost:3000/api/v1/players/get-players")
+ console.log(players.data.data)
+notes=players.data.data
   if(Array.isArray(notes)){
     notes.forEach(note=>{
       renderNoteToList(note,note._id)
@@ -98,11 +97,11 @@ function renderNoteToList(note,unquieID){
  }
  
 async function removeElementFromTheList(id){
-  console.log(id) //seeing whether getting correct id i.e the id of the note we are deleting
-  let res=await axios.delete(`http://localhost:3000/api/v1/players/delete-players/${id}`)//using id as we are deleting element with its id
+  console.log(id) 
+  let res=await axios.delete(`http://localhost:3000/api/v1/players/delete-players/${id}`)
   console.log(res.data)
 document.querySelector(`.note${id}`).remove()
-renderElementsToScreen()//it is for ,after deleting to see updated results without refreshing
+renderElementsToScreen()
 
 
 }
@@ -116,8 +115,8 @@ async function updatePlayers(unquieID,note){
   document.getElementById('role').value=note.role
   note.available?document.getElementById('role_yes').checked=true:
   document.getElementById('role_no').checked=true
-  updatingID=unquieID//when we click update our unquie id is the updating id
-  noteBtn.innerHTML='Update'//when clicking on a created note submit button will become update
+  updatingID=unquieID
+  noteBtn.innerHTML='Update'
 }
 
 renderElementsToScreen()
